@@ -1,9 +1,7 @@
 
-import json
 import time
-from pymongo import *
 from GameFunctions import *
-from bjObjects import *
+from DatabaseFunctions import *
 
 #card_value = ['Ace','2','3','4','5','6','7','8','9','10','J','Q','K']
 #card_type = ['Hearts','Spades','Clubs','Diamonds']
@@ -18,27 +16,39 @@ data = {
 	"hands": []  #format of each hand. timestamp, playerHand Arr, dealerHand Arr, win (1/0), #hits, #doubles
 }
 
+#temp
+casino = "La Casa De Mi Padre"
+deckCount = 2
 def game():
-	#begin mongoDB connection
-	client = MongoClient(
-		"mongodb+srv://root:chicago1%21@blackjackanalytics-idjco.mongodb.net/Results?retryWrites=true&w=majority&authSource=admin")
-	db = client.Results
-	coll = db.TestColResults
+	#get mongoDB collection pointer
+	coll = LaunchConnection()
+
+	#todo: figure out how to handle Dealer in dealFirstHand()
+	dealerHand = Hand()
 
 	print ("WELCOME TO BLACKJACK!\n")
-	deckCount = 2
-	deck = Deck(deckCount)
-	deck.shuffle()
+	# deckCount = 2
+	# deck = Deck(deckCount)
+	# deck.shuffle()
+	#
+	# #playerName = input("Hello player, what is your name?").lower()
+	# playerName = choice = input("Enter Player Name:  ")
+	# players.append( Player(playerName, 100) )
+	#
+	# #begin recording
+	# data["player"] = playerName
+	# data["casino"] = "La Casa de mi Padre"
+	#
+	# #deal first hands
 
-	#playerName = input("Hello player, what is your name?").lower()
-	playerName = choice = input("Enter Player Name:  ")
-	players.append( Player(playerName, 100) )
+	###INITIALIZE phase
+	#creates a deck, with deckCount decided by casino
+	deck = initializeDeck(deckCount)
+	initializeOnePlayer(players, data, casino)
 
-	#begin recording
-	data["player"] = playerName
-	data["casino"] = "La Casa de mi Padre"
-
-	#deal first hands
+	#todo: repair dealFirstHand once resolved confilct with referencing player in initial Blackjack check.
+	# Probably requires making blackjack just check 1 player at a time
+	#dealFirstHand(players, dealerHand, deck)
 	for player in players:
 		player.currentHand.append( Hand() )
 		player.currentHand[0].deal(deck)
@@ -60,6 +70,7 @@ def game():
 
 		#check for dealer blackjack. Called this before showing the dealer hand because it's weird to announce their top card then BJ
 		#TODO: eventually, end the round at this point if dealer blackjack
+		blackjack(dealerHand, player)
 		blackjack(dealerHand, player)
 		print("The dealer is showing a " + str(dealerHand.hand[0]))
 

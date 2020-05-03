@@ -45,7 +45,7 @@ class Hand:
     def deal(self, deck):
         for i in range(2):
             self.hand.append( deck.pop() )
-        self.originalScore = self.total() #todo: testing if score function worksw
+        self.originalScore = self.total() #todo: testing if score function works
 
     #function to see if a split is possible. Assumes new hand (only 2 elements)
     def splitCheck(self):

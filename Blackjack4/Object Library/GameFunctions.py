@@ -1,11 +1,32 @@
 import os
 import random
+from bjObjects import *
 
 def clear():
 	if os.name == 'nt':
 		os.system('CLS')
 	if os.name == 'posix':
 		os.system('clear')
+
+def initializeDeck(deckCount):
+	deck = Deck(deckCount)
+	deck.shuffle()
+	return deck
+
+#dependent on Player object, doesn't work in GameFunctions.py
+def initializeOnePlayer(players, data, casino):
+	playerName = choice = input("Enter Player Name:  ")
+	players.append(Player(playerName, 100))
+	# begin recording
+	data["player"] = playerName
+	data["casino"] = casino
+
+def dealFirstHand(players, dealerHand, deck):
+	# deal first hands
+	for player in players:
+		player.currentHand.append(Hand())
+		player.currentHand[0].deal(deck)
+	dealerHand.deal(deck)
 
 #if happy with print, delete comments
 def print_results(dealerHand, player_hand): #name, hand):
