@@ -1,4 +1,4 @@
-
+#tempchange
 import time
 from GameFunctions import *
 from DatabaseFunctions import *
@@ -10,6 +10,7 @@ from DatabaseFunctions import *
 choice = ""
 clear()
 players = []
+newFakefield = []
 data = {
 	"player": "",
 	"casino": "",
