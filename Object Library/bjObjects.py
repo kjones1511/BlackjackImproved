@@ -2,6 +2,7 @@ import random
 import json
 #todo: destructors?
 #updating commit comment
+#commit comment numero dos
 
 class Card:
     #suit is string, value should be integer
