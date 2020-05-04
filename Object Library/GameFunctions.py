@@ -1,14 +1,5 @@
-import os
-import time
 import random
 from bjObjects import *
-
-#clears terminal, for debugging only (TODO: remove functions like this in prod?)
-def clear():
-	if os.name == 'nt':
-		os.system('CLS')
-	if os.name == 'posix':
-		os.system('clear')
 
 def initializeDeck(deckCount):
 	deck = Deck(deckCount)

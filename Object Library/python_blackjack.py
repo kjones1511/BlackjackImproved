@@ -1,9 +1,6 @@
 from GameFunctions import *
 from DatabaseFunctions import *
 
-#card_value = ['Ace','2','3','4','5','6','7','8','9','10','J','Q','K']
-#card_type = ['Hearts','Spades','Clubs','Diamonds']
-
 # initialize
 choice = ""
 clear()
@@ -54,22 +51,23 @@ def game():
 		#handle splits
 		#option to hit per hand
 		for player in players:
-			#TODO HANDLE BLACKJACK FOR SPLITS
-			i = 0
-			while i < len(player.currentHand):
-				if player.currentHand[i].splitCheck():
-					clear()
-					choice = input("[Y/N] Would you like to Split this hand?: \n" + str(player.currentHand[i]) + "\n").lower()
-					if choice == "y":
-						player.split( i,deck)
-						print("New hands for " + player.name + ":")
-						print( player.currentHand[i])
-						print(player.currentHand[i+1])
-						time.sleep(1)
-					else:
-						i += 1
-				else:
-					i += 1
+			player.splitLogic(deck)
+			# #TODO HANDLE BLACKJACK FOR SPLITS
+			# i = 0
+			# while i < len(player.currentHand):
+			# 	if player.currentHand[i].splitCheck():
+			# 		clear()
+			# 		choice = input("[Y/N] Would you like to Split this hand?: \n" + str(player.currentHand[i]) + "\n").lower()
+			# 		if choice == "y":
+			# 			player.split( i,deck)
+			# 			print("New hands for " + player.name + ":")
+			# 			print( player.currentHand[i])
+			# 			print(player.currentHand[i+1])
+			# 			time.sleep(1)
+			# 		else:
+			# 			i += 1
+			# 	else:
+			# 		i += 1
 
 
 			#decision-making logic for each player hand
