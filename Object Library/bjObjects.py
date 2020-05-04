@@ -18,6 +18,7 @@ class Card:
         elif self.value == 14: pVal = "A"
         return "[" + self.suit + ", " + str(pVal) + "]"
 
+    #note: equality is checking suit and value (for ensuring a deck is shuffled). No current method for checking just value equality
     def __eq__(self, other):
         """Overrides the default implementation"""
         if isinstance(other, self.__class__):
@@ -106,7 +107,7 @@ class Player:
     def __init__(self, name, initial_money):
         self.name = name
         self.hands = []
-        self.currentHand = [] #will be array of hands
+        self.currentHand = [Hand()] #will be array of hands, starts with 1 due to needing to access element 0
         self.money = initial_money
 
     #handIndex assumes moving through currentHand index in ascending order

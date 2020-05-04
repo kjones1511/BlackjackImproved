@@ -1,4 +1,3 @@
-import time
 from GameFunctions import *
 from DatabaseFunctions import *
 
@@ -18,6 +17,8 @@ data = {
 #temp
 casino = "La Casa De Mi Padre"
 deckCount = 2
+dealerStandBoundary = 17
+
 def game():
 	#get mongoDB collection pointer
 	coll = LaunchConnection()
@@ -32,32 +33,23 @@ def game():
 	deck = initializeDeck(deckCount)
 	initializeOnePlayer(players, data, casino)
 
-	#todo: repair dealFirstHand once resolved confilct with referencing player in initial Blackjack check.
-	# Probably requires making blackjack just check 1 player at a time
-	#dealFirstHand(players, dealerHand, deck)
-	for player in players:
-		player.currentHand.append( Hand() )
-		player.currentHand[0].deal(deck)
-	dealerHand = Hand()
-	dealerHand.deal(deck)
+	dealHand(players, dealerHand, deck)
 
 	#TODO add code to record decks
 
-	#TODO delete this test CODE
-	# deck.cards[-1] = Card("D",7)
-	# deck.cards[-2] = Card("J", 8)
-	# players[0].currentHand[0].hand = [ Card("H",7), Card("H",7)]
-
 	#main game loop - runs until request to quit or no players
 	while len(players) != 0 or choice != "q":
+
 		#shuffles deck if running low
 		if len(deck.cards) < 30:
 			deck = Deck(deckCount)
 
 		#check for dealer blackjack. Called this before showing the dealer hand because it's weird to announce their top card then BJ
-		#TODO: eventually, end the round at this point if dealer blackjack
-		blackjack(dealerHand, player)
+		#TODO: eventually, end the round at this point if dealer blackjack. Blackjack logic currently busted ,only checks player 0
+		blackjack(dealerHand, players[0])
 		print("The dealer is showing a " + str(dealerHand.hand[0]))
+
+		#todo: show everyone's initial hand
 
 		#handle splits
 		#option to hit per hand
@@ -79,35 +71,14 @@ def game():
 				else:
 					i += 1
 
+
+			#decision-making logic for each player hand
 			for thisHand in player.currentHand:
 				clear()
-				choice = ""
-				#for hand in hands:
-				doubleState = True
-				while choice not in ["s","d","q"] and thisHand.total() < 21:
-					print("Player:" + player.name + "\nHand:" + str(thisHand) + "\nScore:" + str(thisHand.total()) )
-					if doubleState:
-						choice = input("Do you want to [D]ouble down, [H]it, or [S]tand: ").lower()
-						doubleState = False
-					else:
-						choice = input("Do you want to [H]it, [S]tand, or [Q]uit: ").lower()
-					#clear()
-					if choice == "h":
-						thisHand.hitState = 1
-						thisHand.hit(deck)
-						print("your new card is: " + str(thisHand.hand[-1]) + "\nfor a total of " + str(thisHand.total()))
-					elif choice == "s":
-						print( player.name + " stands" )
-					elif choice == "d":
-						thisHand.double = 1
-						thisHand.hit(deck)
-						print("your new card is: " + str(thisHand.hand[-1]) + "\nfor a total of " + str(thisHand.total()))
-					time.sleep(1)
-					clear()
+				playerDecisionHandling (thisHand, dealerHand, player, deck)
 
 		#resolve dealer hand
-		while dealerHand.total() < 17:
-			dealerHand.hit(deck)
+		dealerHitlogic(dealerHand, dealerStandBoundary, deck)
 
 		#Score, Record & give a chance to leave the game at any time, or after rounds
 		#NOTE: Scoring shouldn't occur if there are 0 players in game
@@ -135,10 +106,11 @@ def game():
 				#print(data)
 
 		#deal new hands
-		for player in players:
-			player.currentHand = [Hand()]
-			player.currentHand[0].newHand(deck)
-		dealerHand.newHand(deck)
+		dealHand(players, dealerHand, deck)
+		# for player in players:
+		# 	player.currentHand = [Hand()]
+		# 	player.currentHand[0].newHand(deck)
+		# dealerHand.newHand(deck)
 		clear()
 	exit()
 
