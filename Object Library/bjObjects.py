@@ -8,10 +8,6 @@ class Card:
     def __init__(self, suit, value):
         self.suit = suit
         self.value = value
-#        self.__dict__ = {"suit": self.suit, "value": self.value}
-
-#    def __dict__(self):
-#        return {"suit": self.suit, "value": self.value}
 
     def __str__(self):
         pVal = self.value
@@ -20,6 +16,12 @@ class Card:
         elif self.value == 13: pVal = "K"
         elif self.value == 14: pVal = "A"
         return "[" + self.suit + ", " + str(pVal) + "]"
+
+    def __eq__(self, other):
+        """Overrides the default implementation"""
+        if isinstance(other, self.__class__):
+            return (self.suit == other.suit and self.value == other.value)
+        return NotImplemented
 
 class Hand:
     def __init__(self):
@@ -119,21 +121,3 @@ class Player:
             self.currentHand[i].hit(deck)
             self.currentHand[i].split = 1
             self.currentHand[i].originalScore = self.currentHand[i].total() #todo: testing if this works, score is in diff library
-
-if __name__ == "__main__":
-
-    player =Player("kile",100)
-
-    card1 = Card("S",7)
-    card2 = Card("D",7)
-    card3 = Card("D",7)
-    deck = Deck(2)
-    deck.shuffle()
-    hand = Hand()
-    player.currentHand.append(hand)
-    player.currentHand[0].hand = [ card1, card2, card3]
-
-    data = json.dumps(player.__dict__, default = lambda o:o.__dict__)
-    print(data)
-    #print( vars(card1) )
-    #print(vars(player.currentHand[0]))

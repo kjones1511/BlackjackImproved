@@ -1,4 +1,3 @@
-#tempchange
 import time
 from GameFunctions import *
 from DatabaseFunctions import *
@@ -10,7 +9,6 @@ from DatabaseFunctions import *
 choice = ""
 clear()
 players = []
-newFakefield = []
 data = {
 	"player": "",
 	"casino": "",
@@ -28,19 +26,6 @@ def game():
 	dealerHand = Hand()
 
 	print ("WELCOME TO BLACKJACK!\n")
-	# deckCount = 2
-	# deck = Deck(deckCount)
-	# deck.shuffle()
-	#
-	# #playerName = input("Hello player, what is your name?").lower()
-	# playerName = choice = input("Enter Player Name:  ")
-	# players.append( Player(playerName, 100) )
-	#
-	# #begin recording
-	# data["player"] = playerName
-	# data["casino"] = "La Casa de mi Padre"
-	#
-	# #deal first hands
 
 	###INITIALIZE phase
 	#creates a deck, with deckCount decided by casino
@@ -71,7 +56,6 @@ def game():
 
 		#check for dealer blackjack. Called this before showing the dealer hand because it's weird to announce their top card then BJ
 		#TODO: eventually, end the round at this point if dealer blackjack
-		blackjack(dealerHand, player)
 		blackjack(dealerHand, player)
 		print("The dealer is showing a " + str(dealerHand.hand[0]))
 
