@@ -1,6 +1,7 @@
 import random
 import os
 import time
+from datetime import datetime
 import json
 #todo: destructors?
 
@@ -35,6 +36,7 @@ class Card:
 class Hand:
 	def __init__(self):
 		self.hand = []
+		self.startTime = datetime.now(tz=None)
 		self.blackjack = 0
 		self.win = 0
 		self.split = 0
