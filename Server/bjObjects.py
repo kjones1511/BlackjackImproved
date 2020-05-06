@@ -36,7 +36,8 @@ class Card:
 class Hand:
 	def __init__(self):
 		self.hand = []
-		self.startTime = datetime.now(tz=None)
+		#todo: re-add datetime once mDB implemented. Currently, won't work with lambda dict collapse
+		#self.startTime = datetime.now(tz=None)
 		self.blackjack = 0
 		self.win = 0
 		self.split = 0
