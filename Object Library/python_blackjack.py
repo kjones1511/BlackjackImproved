@@ -27,12 +27,14 @@ def game():
 
 	###INITIALIZE phase
 	#creates a deck, with deckCount decided by casino
-	deck = initializeDeck(deckCount)
 	initializeOnePlayer(players, data, casino)
+	deck = initializeDeck(deckCount)
 
 	dealHand(players, dealerHand, deck)
 
 	#TODO add code to record decks
+
+	#TODO: 1 second of initially showing cards
 
 	#main game loop - runs until request to quit or no players
 	while len(players) != 0 or choice != "q":
@@ -46,29 +48,10 @@ def game():
 		blackjack(dealerHand, players[0])
 		print("The dealer is showing a " + str(dealerHand.hand[0]))
 
-		#todo: show everyone's initial hand
-
 		#handle splits
 		#option to hit per hand
 		for player in players:
 			player.splitLogic(deck)
-			# #TODO HANDLE BLACKJACK FOR SPLITS
-			# i = 0
-			# while i < len(player.currentHand):
-			# 	if player.currentHand[i].splitCheck():
-			# 		clear()
-			# 		choice = input("[Y/N] Would you like to Split this hand?: \n" + str(player.currentHand[i]) + "\n").lower()
-			# 		if choice == "y":
-			# 			player.split( i,deck)
-			# 			print("New hands for " + player.name + ":")
-			# 			print( player.currentHand[i])
-			# 			print(player.currentHand[i+1])
-			# 			time.sleep(1)
-			# 		else:
-			# 			i += 1
-			# 	else:
-			# 		i += 1
-
 
 			#decision-making logic for each player hand
 			for thisHand in player.currentHand:
